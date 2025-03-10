@@ -3,20 +3,17 @@ options:
 
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:latest', '-t', 'us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:$SHORT_SHA', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:latest', '.']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:latest']
-
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:$SHORT_SHA']
 
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
       - 'set'
       - 'image'
       - 'deployment/application-deployment'
-      - 'container2=us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:$SHORT_SHA'
+      - 'container2=us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:latest'
     env:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
