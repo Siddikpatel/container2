@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import csv
 
 app = Flask(__name__)
-base_path = './local/'
+base_path = '/siddik_PV_dir/'
 
 @app.route('/', methods=['POST'])
 def calculate_sum():
