@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 import csv
 
@@ -15,7 +16,7 @@ def calculate_sum():
     sum = 0
 
     try: 
-        with open(base_path + file_name, 'r') as csvfile:
+        with open(os.path.join(base_path, file_name), 'r') as csvfile:
 
             reader = csv.DictReader(csvfile)
 
@@ -28,8 +29,9 @@ def calculate_sum():
 
         return jsonify({"file": file_name, "sum": sum}), 200
     
-    except:
-        return jsonify({"file": file_name, "error": "Input file not in CSV format."}), 500
+    except Exception as e:
+        message = str(e)
+        return jsonify({"file": file_name, "error": message}), 500
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5100)
