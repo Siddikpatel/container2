@@ -30,7 +30,6 @@ def calculate_sum():
         return jsonify({"file": file_name, "sum": sum}), 200
     
     except Exception as e:
-        message = str(e)
         return jsonify({"file": file_name, "error": message}), 500
     
 if __name__ == '__main__':
