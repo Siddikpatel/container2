@@ -3,17 +3,17 @@ options:
 
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:latest', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest', '.']
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:latest']
+    args: ['push', 'us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest']
 
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
       - 'set'
       - 'image'
       - 'deployment/application-deployment'
-      - 'container2=us-central1-docker.pkg.dev/ace-botany-451622-n1/csci5409/container2:latest'
+      - 'container2=us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest'
     env:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
