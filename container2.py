@@ -27,7 +27,7 @@ def calculate_sum():
                 if row['product'] == product:
                     sum += int(row['amount'])
 
-        return jsonify({"file": file_name, "sum": sum}), 200
+        return jsonify({"file": file_name, "nosum": sum}), 200
     
     except Exception as e:
         return jsonify({"file": file_name, "error": "Input file not in CSV format."}), 500
