@@ -30,7 +30,7 @@ def calculate_sum():
         return jsonify({"file": file_name, "sum": sum}), 200
     
     except Exception as e:
-        return jsonify({"file": file_name, "error": message}), 500
+        return jsonify({"file": file_name, "error": "Input file not in CSV format."}), 500
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5100)
