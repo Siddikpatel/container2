@@ -9,15 +9,17 @@ steps:
     args: ['push', 'us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:$BUILD_ID']
 
   - name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: 'bash'
     args:
-      - 'set'
-      - 'image'
-      - 'deployment/application-deployment'
-      - 'container2=us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:$BUILD_ID'
+      - '-c'
+      - |
+        kubectl set image deployment/application-deployment \
+        container1=us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:$BUILD_ID
     env:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
       - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
+      - 'BUILD_ID=$BUILD_ID'
 
   - name: 'gcr.io/cloud-builders/kubectl'
     args: ['rollout', 'restart', 'deployment/application-deployment']
