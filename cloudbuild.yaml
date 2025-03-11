@@ -8,13 +8,22 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest']
 
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args:
-      - 'set'
-      - 'image'
-      - 'deployment/application-deployment'
-      - 'container2=us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest'
+  - name: "gcr.io/cloud-builders/kubectl"
+    id: deploy-image-id
     env:
-      - 'CLOUDSDK_COMPUTE_REGION=us-central1'
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
+      - "CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster"
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1"
+    args:
+      - "apply"
+      - "-f"
+      - "deployment.yml"
+
+  - name: "gcr.io/cloud-builders/kubectl"
+    id: rollout-image-id
+    env:
+      - "CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster"
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1"
+    args:
+      - "rollout"
+      - "restart"
+      - "deployment/application-deployment"
