@@ -16,7 +16,7 @@ steps:
     args:
       - "apply"
       - "-f"
-      - "deployment.yml"
+      - "deployment.yaml"
 
   - name: "gcr.io/cloud-builders/kubectl"
     id: rollout-image-id
