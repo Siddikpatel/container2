@@ -8,11 +8,6 @@ spec:
   selector:
     matchLabels:
       app: container2-deployment
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1  # Only one container will be updated at a time
-      maxSurge: 1
   template:
     metadata:
       labels:
