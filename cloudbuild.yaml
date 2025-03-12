@@ -12,7 +12,7 @@ steps:
     args:
       - 'set'
       - 'image'
-      - 'deployment/application-deployment'
+      - 'deployment/container2-deployment'
       - 'container2=us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest'
     env:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
@@ -23,7 +23,7 @@ steps:
     args:
       - 'rollout'
       - 'restart'
-      - 'deployment/application-deployment'
+      - 'deployment/container2-deployment'
     env:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
