@@ -52,7 +52,7 @@ steps:
     args:
       - 'rollout'
       - 'restart'
-      - 'deployment/container2-deployment'
+      - 'deployment/application-deployment'
     env:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
