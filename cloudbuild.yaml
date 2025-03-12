@@ -1,66 +1,98 @@
-options:
-  logging: CLOUD_LOGGING_ONLY
+# options:
+#   logging: CLOUD_LOGGING_ONLY
+
+# steps:
+#   - name: "gcr.io/cloud-builders/docker"
+#     id: "Build"
+#     args:
+#       [
+#         "build",
+#         "--no-cache",
+#         "-t",
+#         "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
+#         ".",
+#       ]
+
+#   - name: "gcr.io/cloud-builders/docker"
+#     id: "Push"
+#     waitFor: ["Build"]
+#     args:
+#       [
+#         "push",
+#         "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
+#       ]
+
+#   # - name: "gcr.io/cloud-builders/gke-deploy"
+#   #   args:
+#   #     - run
+#   #     - --filename=./kubernetes
+#   #     - --image=us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest
+#   #     - --location=us-central1-a
+#   #     - --cluster=assignment-cluster
+
+#   # - name: 'gcr.io/cloud-builders/kubectl'
+#   #   id: "Apply"
+#   #   waitFor: ["Push"]
+#   #   args:
+#   #     - 'apply'
+#   #     - '-f'
+#   #     - 'deployment.yaml'
+#   #   env:
+#   #     - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
+#   #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+#   #     - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
+
+#   # - name: 'gcr.io/cloud-builders/kubectl'
+#   #   args:
+#   #     - 'set'
+#   #     - 'image'
+#   #     - 'deployment/container2-deployment'
+#   #     - 'container2=us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest'
+#   #   env:
+#   #     - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
+#   #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+#   #     - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
+
+#   - name: "gcr.io/cloud-builders/kubectl"
+#     id: "Rollout"
+#     waitFor: ["Push"]
+#     args:
+#       - "rollout"
+#       - "restart"
+#       - "deployment/application-deployment"
+#     env:
+#       - "CLOUDSDK_COMPUTE_REGION=us-central1-a"
+#       - "CLOUDSDK_COMPUTE_ZONE=us-central1-a"
+#       - "CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster"
 
 steps:
   - name: "gcr.io/cloud-builders/docker"
-    id: "Build"
+    id: build-image-id
     args:
-      [
-        "build",
-        "--no-cache",
-        "-t",
-        "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
-        ".",
-      ]
-
+      - "build"
+      - "-t"
+      - "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2"
+      - "."
   - name: "gcr.io/cloud-builders/docker"
-    id: "Push"
-    waitFor: ["Build"]
+    id: push-image-id
     args:
-      [
-        "push",
-        "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
-      ]
-
-  # - name: "gcr.io/cloud-builders/gke-deploy"
-  #   args:
-  #     - run
-  #     - --filename=./kubernetes
-  #     - --image=us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest
-  #     - --location=us-central1-a
-  #     - --cluster=assignment-cluster
-
-  # - name: 'gcr.io/cloud-builders/kubectl'
-  #   id: "Apply"
-  #   waitFor: ["Push"]
-  #   args:
-  #     - 'apply'
-  #     - '-f'
-  #     - 'deployment.yaml'
-  #   env:
-  #     - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
-  #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-  #     - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
-
-  # - name: 'gcr.io/cloud-builders/kubectl'
-  #   args:
-  #     - 'set'
-  #     - 'image'
-  #     - 'deployment/container2-deployment'
-  #     - 'container2=us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest'
-  #   env:
-  #     - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
-  #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-  #     - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
-
+      - "push"
+      - "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2"
   - name: "gcr.io/cloud-builders/kubectl"
-    id: "Rollout"
-    waitFor: ["Push"]
+    id: run-image-id
+    env:
+      - "CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster"
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1-a"
+    args:
+      - "apply"
+      - "-f"
+      - "deployment.yaml"
+  - name: "gcr.io/cloud-builders/kubectl"
+    id: rollout-image-id
+    env:
+      - "CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster"
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1-a"
     args:
       - "rollout"
       - "restart"
-      - "deployment/application-deployment"
-    env:
-      - "CLOUDSDK_COMPUTE_REGION=us-central1-a"
-      - "CLOUDSDK_COMPUTE_ZONE=us-central1-a"
-      - "CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster"
+      - "deployment/image-pod-2"
