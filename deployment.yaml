@@ -1,13 +1,26 @@
-# Deployment for container2 (exposed to the internet)
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: container-pvc
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Gi
+      
+# ---
+
+# Deployment for container1 (exposed to the internet)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: container2-deployment
+  name: application-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: container2-deployment
+      app: application-deployment
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,18 +29,42 @@ spec:
   template:
     metadata:
       labels:
-        app: container2-deployment
+        app: application-deployment
     spec:
       volumes:
         - name: shared-volume
           persistentVolumeClaim:
             claimName: container-pvc
       containers:
-        - name: container2
-          image: us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest
+        - name: container1
+          image: us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container1:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 6000
           volumeMounts:
             - mountPath: /siddik_PV_dir
               name: shared-volume
+        - name: container2
+          image: us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5100
+          volumeMounts:
+            - mountPath: /siddik_PV_dir
+              name: shared-volume
+
+---
+# Service for container1 (exposed to the internet)
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-deployment-service
+spec:
+  selector:
+    app: application-deployment
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 6000
+      name: http
+  type: LoadBalancer # Expose container1 to the internet
