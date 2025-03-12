@@ -55,7 +55,7 @@ steps:
 
   - name: "gcr.io/cloud-builders/kubectl"
     id: "Rollout"
-    waitFor: ["Apply"]
+    waitFor: ["Push"]
     args:
       - "rollout"
       - "restart"
