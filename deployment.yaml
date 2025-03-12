@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: image-pod-2
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-container-2
+
+  template:
+    metadata:
+      labels:
+        app: kube-container-2
+
+    spec:
+      containers:
+        - name: container2
+          image: "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5100
+          volumeMounts:
+            - name: kube-storage
+              mountPath: /siddik_PV_dir
+
+      volumes:
+        - name: kube-storage
+          persistentVolumeClaim:
+            claimName: kube-storage
