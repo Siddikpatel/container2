@@ -9,7 +9,7 @@ steps:
         "build",
         "--no-cache",
         "-t",
-        "us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
+        "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
         ".",
       ]
 
@@ -19,15 +19,15 @@ steps:
     args:
       [
         "push",
-        "us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
+        "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
       ]
 
   # - name: "gcr.io/cloud-builders/gke-deploy"
   #   args:
   #     - run
   #     - --filename=./kubernetes
-  #     - --image=us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest
-  #     - --location=us-central1
+  #     - --image=us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest
+  #     - --location=us-central1-a
   #     - --cluster=assignment-cluster
 
   # - name: 'gcr.io/cloud-builders/kubectl'
@@ -38,8 +38,8 @@ steps:
   #     - '-f'
   #     - 'deployment.yaml'
   #   env:
-  #     - 'CLOUDSDK_COMPUTE_REGION=us-central1'
-  #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
+  #     - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
+  #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   #     - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
 
   # - name: 'gcr.io/cloud-builders/kubectl'
@@ -47,20 +47,20 @@ steps:
   #     - 'set'
   #     - 'image'
   #     - 'deployment/container2-deployment'
-  #     - 'container2=us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest'
+  #     - 'container2=us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest'
   #   env:
-  #     - 'CLOUDSDK_COMPUTE_REGION=us-central1'
-  #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
+  #     - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
+  #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   #     - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
 
-  - name: 'gcr.io/cloud-builders/kubectl'
+  - name: "gcr.io/cloud-builders/kubectl"
     id: "Rollout"
     waitFor: ["Apply"]
     args:
-      - 'rollout'
-      - 'restart'
-      - 'deployment/application-deployment'
+      - "rollout"
+      - "restart"
+      - "deployment/application-deployment"
     env:
-      - 'CLOUDSDK_COMPUTE_REGION=us-central1'
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
+      - "CLOUDSDK_COMPUTE_REGION=us-central1-a"
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1-a"
+      - "CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster"
