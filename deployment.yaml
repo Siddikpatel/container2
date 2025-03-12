@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: container2
-          image: "us-central1-a-docker.pkg.dev/western-notch-453423-p9/csci5409/container2"
+          image: "us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2"
           imagePullPolicy: Always
           ports:
             - containerPort: 5100
