@@ -1,61 +1,6 @@
 options:
   logging: CLOUD_LOGGING_ONLY
 
-# steps:
-#   - name: "gcr.io/cloud-builders/docker"
-#     id: "Build"
-#     args:
-#       [
-#         "build",
-#         "--no-cache",
-#         "-t",
-#         "us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
-#         ".",
-#       ]
-
-#   - name: "gcr.io/cloud-builders/docker"
-#     id: "Push"
-#     waitFor: ["Build"]
-#     args:
-#       [
-#         "push",
-#         "us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest",
-#       ]
-
-#   # - name: "gcr.io/cloud-builders/gke-deploy"
-#   #   args:
-#   #     - run
-#   #     - --filename=./kubernetes
-#   #     - --image=us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest
-#   #     - --location=us-central1
-#   #     - --cluster=assignment-cluster
-
-#   # - name: 'gcr.io/cloud-builders/kubectl'
-#   #   id: "Apply"
-#   #   waitFor: ["Push"]
-#   #   args:
-#   #     - 'apply'
-#   #     - '-f'
-#   #     - 'deployment.yaml'
-#   #   env:
-#   #     - 'CLOUDSDK_COMPUTE_REGION=us-central1'
-#   #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
-#   #     - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
-
-
-
-#   - name: "gcr.io/cloud-builders/kubectl"
-#     id: "Rollout"
-#     waitFor: ["Push"]
-#     args:
-#       - "rollout"
-#       - "restart"
-#       - "deployment/application-deployment"
-#     env:
-#       - "CLOUDSDK_COMPUTE_REGION=us-central1"
-#       - "CLOUDSDK_COMPUTE_ZONE=us-central1"
-#       - "CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster"
-
 steps:
   - name: "gcr.io/cloud-builders/docker"
     id: build-image-id
@@ -63,25 +8,14 @@ steps:
       - "build"
       - "--no-cache"
       - "-t"
-      - "us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2"
+      - "us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest"
       - "."
 
   - name: "gcr.io/cloud-builders/docker"
     id: push-image-id
     args:
       - "push"
-      - "us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2"
-
-  # - name: 'gcr.io/cloud-builders/kubectl'
-  #   args:
-  #     - 'set'
-  #     - 'image'
-  #     - 'deployment/container2-deployment'
-  #     - 'container2=us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2'
-  #   env:
-  #     - 'CLOUDSDK_COMPUTE_REGION=us-central1'
-  #     - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
-  #     - 'CLOUDSDK_CONTAINER_CLUSTER=assignment-cluster'
+      - "us-central1-docker.pkg.dev/western-notch-453423-p9/csci5409/container2:latest"
 
   - name: "gcr.io/cloud-builders/kubectl"
     id: rollout-image-id
